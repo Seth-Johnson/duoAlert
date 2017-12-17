@@ -5,6 +5,8 @@ import requests
 import os
 import json
 import logging
+import time
+import datetime
 
 api_endpoint = 'http://www.duolingo.com/users/'
 
@@ -12,7 +14,9 @@ webhook_url = None
 users = []
 streak_data = {}
 lang = None
+version = "0.1"
 
+timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')
 logging.basicConfig(filename="duoAlert.log", level=logging.INFO)
 
 def get_config():
@@ -27,10 +31,22 @@ def get_config():
 
 def send_discord(r_msg):
     data = {
-        "content": r_msg
+        "embeds":[{
+          "title":"Duolingo Streak Bot",
+          "description":"{}".format(r_msg),
+          "type":"rich",
+          "thumbnail": {
+            "url":"https://i.imgur.com/OTFSldg.png"
+          },
+          "footer":{
+            "text":"DuoAlert v{} | {}".format(version, timestamp),
+            "icon_url":"https://i.imgur.com/OTFSldg.png"
+          }
+        }]
     }
-    r = requests.post(webhook_url, data=data)
-
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    r = requests.post(webhook_url, data=json.dumps(data), headers=headers)
+    logging.info("Post data: {}".format(r))
 def update_data():
     global streak_data
     for user in users:
@@ -59,9 +75,9 @@ def check_data():
     previous = json.load(previous_r)
     previous_r.close()
     for user in previous.keys():
-        logging.INFO("Loop 1: New: {} Old:{}".format(streak_data[user], previous[user]))
+        logging.info("Loop 1: New: {} Old:{}".format(streak_data[user], previous[user]))
         if streak_data[user] == previous[user]:
-            logging.INFO("First If: New: {} Old:{}".format(streak_data[user], previous[user]))
+            logging.info("First If: New: {} Old:{}".format(streak_data[user], previous[user]))
         elif streak_data[user] > previous[user]:
             if streak_data[user] > 1:
                 send_discord("@everyone {} has continued their streak of {} days! Congratulations!".format(user, streak_data[user]))
