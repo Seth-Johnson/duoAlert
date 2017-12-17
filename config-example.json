@@ -1,0 +1,5 @@
+{
+  "webhook_url": "<discord_webhook_url>",
+  "users": ["exampleUser"],
+  "language": "eo"
+}
