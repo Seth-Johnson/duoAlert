@@ -17,6 +17,7 @@ lang = None
 version = "0.1"
 
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')
+complete_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 logging.basicConfig(filename="duoAlert.log", level=logging.INFO)
 
 def get_config():
@@ -28,6 +29,7 @@ def get_config():
         webhook_url = config['webhook_url']
         users = config['users']
         lang = config['language']
+        logging.info("Config set.")
 
 def send_discord(r_msg):
     data = {
@@ -65,6 +67,7 @@ def update_data_file():
         streak_file = open("streak_data.json", 'w')
         streak_file.write(json.dumps(streak_data))
         streak_file.close()
+        logging.info("Data file updated.")
     except Exception as e:
         logging.critical("Failed to open or write to data file. Aborting.")
         logging.critical("Exception was {}".format(e))
@@ -74,19 +77,24 @@ def check_data():
     previous_r = open('streak_data.json')
     previous = json.load(previous_r)
     previous_r.close()
+    logging.info("Loaded streak data.")
     for user in previous.keys():
-        logging.info("Loop 1: New: {} Old:{}".format(streak_data[user], previous[user]))
+        logging.info("Loop 1 for {}: New: {} Old:{}".format(user, streak_data[user], previous[user]))
         if streak_data[user] == previous[user]:
-            logging.info("First If: New: {} Old:{}".format(streak_data[user], previous[user]))
+            logging.info("No new streak for {}. Skipping.".format(user))
         elif streak_data[user] > previous[user]:
             if streak_data[user] > 1:
                 send_discord("@everyone {} has continued their streak of {} days! Congratulations!".format(user, streak_data[user]))
+                logging.info("{} has extended their streak.".format(user))
             elif streak_data[user] == 1:
                 send_discord("@everyone {} has restarted their streak! Clap with pity.".format(user))
+                logging.ingo("{} restarted their streak".format(user))
             else:
                 send_discord("This message should not have been sent... *stratches head*. If recieved, call the president! Set DEFCON 1!")
                 logging.critical("WTH just happened")
-
+        elif streak_data[user] is 0 and previous[user] > 0:
+            send_discord("@everyone {} has lost their streak! Tease them mercilessly.".format(user))
+            logging.info("{} failed their streak. Loser.".format(user))
 def get_streak(data_p):
     streak = data_p["language_data"][lang]["streak"]
     return streak
@@ -94,6 +102,7 @@ def get_streak(data_p):
 
 def main():
     # check if existing saved data
+    logging.info(complete_timestamp)
     try:
         get_config()
     except Exception as e:
