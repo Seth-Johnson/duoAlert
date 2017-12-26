@@ -88,7 +88,7 @@ def check_data():
                 logging.info("{} has extended their streak.".format(user))
             elif streak_data[user] == 1:
                 send_discord("@everyone {} has restarted their streak! Clap with pity.".format(user))
-                logging.ingo("{} restarted their streak".format(user))
+                logging.info("{} restarted their streak".format(user))
             else:
                 send_discord("This message should not have been sent... *stratches head*. If recieved, call the president! Set DEFCON 1!")
                 logging.critical("WTH just happened")
