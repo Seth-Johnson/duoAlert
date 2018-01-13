@@ -2,15 +2,15 @@
 
 # duoAlert
 
-Uses discord webhooks to send a message when a followed user extends or starts a streak in a specifed language.  
+Uses discord webhooks to send a message when a followed user extends or starts a streak based on their daily goal.  
 
 
 ## config 
 
-DuoAlert reads a basic JSON configuration file to determine which users to follow, what the webhook URL is, and what language to track.  
+DuoAlert reads a basic JSON configuration file to determine which users to follow and what the webhook URL is.  
 
 	{
 	  "webhook_url": "<webhook_url>",
 	  "users": ["exampleUser"],
-	  "language": "eo"
+	  
 	}

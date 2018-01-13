@@ -13,8 +13,7 @@ api_endpoint = 'http://www.duolingo.com/users/'
 webhook_url = None
 users = []
 streak_data = {}
-lang = None
-version = "0.1"
+version = "0.2"
 
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')
 complete_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
@@ -23,12 +22,10 @@ logging.basicConfig(filename="duoAlert.log", level=logging.INFO)
 def get_config():
     global users
     global webhook_url
-    global lang
     with open('config.json') as config_r:
         config = json.load(config_r)
         webhook_url = config['webhook_url']
         users = config['users']
-        lang = config['language']
         logging.info("Config set.")
 
 def send_discord(r_msg):
@@ -49,6 +46,7 @@ def send_discord(r_msg):
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     r = requests.post(webhook_url, data=json.dumps(data), headers=headers)
     logging.info("Post data: {}".format(r))
+
 def update_data():
     global streak_data
     for user in users:
@@ -95,8 +93,9 @@ def check_data():
         elif streak_data[user] is 0 and previous[user] > 0:
             send_discord("@everyone {} has lost their streak! Tease them mercilessly.".format(user))
             logging.info("{} failed their streak. Loser.".format(user))
+
 def get_streak(data_p):
-    streak = data_p["language_data"][lang]["streak"]
+    streak = data_p["site_streak"]
     return streak
 
 
