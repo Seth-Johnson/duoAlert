@@ -2,4 +2,5 @@ streak_data.json
 duoAlert.log
 config.json
 alert.pyc
+config.json.live
 __pycache__/

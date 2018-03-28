@@ -98,7 +98,7 @@ def check_data():
             logging.info("No new streak for {}. Skipping.".format(user))
         elif streak_data[user] > previous[user]:
             if streak_data[user] > 1:
-                send_discord("@everyone {} has continued their streak of {} days! {}!".format(user, streak_data[user], phtext, phurl))
+                send_discord("@everyone {} has continued their streak of {} days! {}!".format(user, streak_data[user], phtext), phurl)
                 logging.info("{} has extended their streak.".format(user))
             elif streak_data[user] == 1:
                 send_discord("@everyone {} has restarted their streak! Clap with pity.".format(user))
