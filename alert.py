@@ -25,7 +25,8 @@ def get_phrase():
     with open('phrases.json') as phrase_r:
         phrase = json.load(phrase_r)
         phrases = phrase['phrases']
-        return random.choice(phrases)
+        r = random.SystemRandom()
+        return r.choice(phrases)
 
 def get_config():
     global users
