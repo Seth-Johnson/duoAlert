@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import urllib.request
+import urllib.parse
 import requests
 import os
 import json
@@ -10,11 +11,13 @@ import datetime
 import random
 
 api_endpoint = 'http://www.duolingo.com/users/'
+giphy_endpoint = 'https://api.giphy.com/v1/gifs/random?api_key={}&tag={}&rating=G'
 
 webhook_url = None
 users = []
 streak_data = {}
 version = "0.4"
+giphy_apikey = ""
 phrase_r = {}
 
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')
@@ -31,10 +34,13 @@ def get_phrase():
 def get_config():
     global users
     global webhook_url
+    global giphy_apikey
     with open('config.json') as config_r:
         config = json.load(config_r)
         webhook_url = config['webhook_url']
         users = config['users']
+        if config['use_giphy']:
+            giphy_apikey = config['giphy_apikey']
         logging.info("Config set.")
 
 def send_discord(r_msg, url = None):
@@ -95,6 +101,14 @@ def check_data():
         phtext = ph["text"]
         phurl = ph["url"]
         logging.info("Loop 1 for {}: New: {} Old:{}".format(user, streak_data[user], previous[user]))
+        if not giphy_apikey == "":
+            try:
+                with urllib.request.urlopen(giphy_endpoint.format(giphy_apikey, urllib.parse.quote(phtext))) as imgapi:
+                    img_p = json.loads(imgapi.read().decode())
+                    phurl = img_p["data"]["image_url"]
+            except Exception as e:
+                logging.exception("Failed to fetch or parse giphy data for keyword '{}'.".format(phtext))
+                logging.exception("Exception was: {}".format(e))
         if streak_data[user] == previous[user]:
             logging.info("No new streak for {}. Skipping.".format(user))
         elif streak_data[user] > previous[user]:
@@ -127,6 +141,5 @@ def main():
     if os.path.exists('streak_data.json'):
         check_data()
     update_data_file()
-
 
 main()
