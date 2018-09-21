@@ -39,7 +39,7 @@ def get_config():
         config = json.load(config_r)
         webhook_url = config['webhook_url']
         users = config['users']
-        if config['use_giphy']:
+        if config['use_giphy'] is True:
             giphy_apikey = config['giphy_apikey']
         logging.info("Config set.")
 
