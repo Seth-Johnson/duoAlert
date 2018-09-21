@@ -12,7 +12,7 @@ DuoAlert reads a basic JSON configuration file to determine which users to follo
 	{
 	  "webhook_url": "<webhook_url>",
 	  "users": ["exampleUser"],
-		"use_giphy": true,
-		"giphy_apikey": "YOUR_API_KEY_HERE"
+	  "use_giphy": true,
+      	  "giphy_apikey": "YOUR_API_KEY_HERE"
 	  
 	}
