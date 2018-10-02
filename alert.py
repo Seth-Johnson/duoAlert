@@ -16,7 +16,7 @@ giphy_endpoint = 'https://api.giphy.com/v1/gifs/random?api_key={}&tag={}&rating=
 webhook_url = None
 users = []
 streak_data = {}
-version = "0.4"
+version = "0.5"
 giphy_apikey = ""
 phrase_r = {}
 
@@ -59,7 +59,7 @@ def send_discord(r_msg, url = None):
             "url":"{}".format(url)
           },
           "footer":{
-            "text":"DuoAlert v{} | {}".format(version, timestamp),
+            "text":"DuoAlert v{} | {} | Powered by GIPHY".format(version, timestamp),
             "icon_url":"https://i.imgur.com/OTFSldg.png"
           }
         }]
