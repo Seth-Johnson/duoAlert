@@ -2,5 +2,6 @@
   "webhook_url": "<discord_webhook_url>",
   "users": ["exampleUser"],
   "use_giphy": true,
+  "giphy_rating": "G",
   "giphy_apikey": "YOUR_API_KEY_HERE"
 }

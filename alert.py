@@ -10,9 +10,7 @@ import time
 import datetime
 import random
 
-api_endpoint = 'http://www.duolingo.com/users/'
-giphy_endpoint = 'https://api.giphy.com/v1/gifs/random?api_key={}&tag={}&rating=G'
-
+#Basic Script Config Variables
 webhook_url = None
 users = []
 streak_data = {}
@@ -20,17 +18,19 @@ version = "0.5"
 giphy_apikey = ""
 phrase_r = {}
 
+#Gets time and creates timestamp
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')
 complete_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 logging.basicConfig(filename="duoAlert.log", level=logging.INFO)
 
+#Function parses phrases data
 def get_phrase():
     with open('phrases.json') as phrase_r:
         phrase = json.load(phrase_r)
         phrases = phrase['phrases']
         r = random.SystemRandom()
         return r.choice(phrases)
-        
+#Function parses config data
 def get_config():
     global users
     global webhook_url
@@ -41,7 +41,12 @@ def get_config():
         users = config['users']
         if config['use_giphy'] is True:
             giphy_apikey = config['giphy_apikey']
+            giphy_rating = config['giphy_rating']
         logging.info("Config set.")
+
+#Main API endpoints
+api_endpoint = 'http://www.duolingo.com/users/'
+giphy_endpoint = 'https://api.giphy.com/v1/gifs/random?api_key={}&tag={}&rating={}'
 
 # Discord Chat Function, uses JSON to send to Discord Wekhook.
 def send_discord(r_msg, url = None):
@@ -114,7 +119,7 @@ def check_data():
         #Checks if GIPHY api was set in config, if it doesnt falls back to links in phrases.json
         if not giphy_apikey == "":
             try:
-                with urllib.request.urlopen(giphy_endpoint.format(giphy_apikey, urllib.parse.quote(phtext))) as imgapi:
+                with urllib.request.urlopen(giphy_endpoint.format(giphy_apikey, urllib.parse.quote(phtext), giphy_rating)) as imgapi:
                     img_p = json.loads(imgapi.read().decode())
                     phurl = img_p["data"]["image_url"]
             except Exception as e:
