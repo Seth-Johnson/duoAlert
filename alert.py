@@ -151,7 +151,7 @@ def get_streak(data_p):
     streak = data_p["site_streak"]
     return streak
 
-#Main funtion
+#Main function
 def main():
     # check if existing saved data
     logging.info(complete_timestamp)
