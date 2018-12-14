@@ -16,3 +16,7 @@ DuoAlert reads a basic JSON configuration file to determine which users to follo
           "giphy_apikey": "YOUR_API_KEY_HERE",
           "giphy_rating": "G"
 	}
+
+## Notice of Non-Affiliation and Disclaimer 
+
+We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with Duolingo, or any of its subsidiaries or its affiliates. The official Duolingo website can be found at http://duolingo.com. The name “Duolingo” as well as related names, marks, emblems and images are registered trademarks of Duolingo.
