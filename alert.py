@@ -77,6 +77,28 @@ def send_discord(r_msg, url = None):
     r = requests.post(webhook_url, data=json.dumps(data), headers=headers)
     #Appends raw POST date to log file.
     logging.info("Post data: {}".format(r))
+    
+#New Login Function Still Testing
+#Login to get data from Duolingo
+def login():
+    global session
+    login_data = {"login": username, "password": password}
+    session = requests.Session()
+    jwt = None
+    headers = {}
+
+    if jwt is not None:
+        headers['Authorization'] = 'Bearer ' + jwt
+        logging.info("Header Set")
+
+    req = requests.Request('POST', login_url,json=login_data,headers=headers,cookies=session.cookies)
+    prepped = req.prepare()
+    request = session.send(prepped)
+    attempt = request.json()
+
+    if attempt.get('response') == 'OK':
+        logging.info(request.headers['jwt'])
+        logging.info("Logged In")
 
 #Updates streak data of users in config file.
 def update_data():
