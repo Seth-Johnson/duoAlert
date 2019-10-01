@@ -32,7 +32,7 @@ def get_phrase():
         phrases = phrase['phrases']
         r = random.SystemRandom()
         return r.choice(phrases)
-        
+
 #Function parses config data
 def get_config():
     global users
@@ -47,9 +47,11 @@ def get_config():
         users = config['users']
         username = config['username']
         password = config['password']
+
         if config['use_giphy'] is True:
             giphy_apikey = config['giphy_apikey']
             giphy_rating = config['giphy_rating']
+
         logging.info("Config set.")
 
 #Main API endpoints
@@ -84,7 +86,6 @@ def send_discord(r_msg, url = None):
     #Appends raw POST date to log file.
     logging.info("Post data: {}".format(r))
 
-#New Login Function Still Testing
 #Login to get data from Duolingo
 def login():
     global session
@@ -108,8 +109,8 @@ def login():
 
 #Updates streak data of users in config file.
 def update_data():
-    logging.info("Updated Data")
-    global streak_data
+	global streak_data
+
     for user in users:
         try:
             with session as data_r:
@@ -118,8 +119,11 @@ def update_data():
             logging.exception("Failed to fetch or parse data for user {}. Skipping.".format(user))
             logging.exception("Exception was: {}".format(e))
             continue
+
         streak = get_streak(data_p)
         streak_data[user] = streak
+
+	logging.info("Updated Data")
 
 #Updates streak_data.json with pulled data from update_data function
 def update_data_file():
@@ -175,7 +179,7 @@ def check_data():
                 logging.critical("WTH just happened")
         #If user has not increased streak, posts the results to Discord
         elif streak_data[user] is 0 and previous[user] > 0:
-            send_discord("@everyone {} has lost their streak! Tease them mercilessly.".format(user))
+            send_discord("@everyone {} has lost their streak! Tease them mercilessly.".format(user), sadness_gif)
             logging.info("{} failed their streak. Loser.".format(user))
 #Returns steak data
 def get_streak(data_p):
