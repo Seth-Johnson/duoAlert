@@ -32,15 +32,21 @@ def get_phrase():
         phrases = phrase['phrases']
         r = random.SystemRandom()
         return r.choice(phrases)
+        
 #Function parses config data
 def get_config():
     global users
     global webhook_url
     global giphy_apikey
+    global giphy_rating
+    global username
+    global password
     with open('config.json') as config_r:
         config = json.load(config_r)
         webhook_url = config['webhook_url']
         users = config['users']
+        username = config['username']
+        password = config['password']
         if config['use_giphy'] is True:
             giphy_apikey = config['giphy_apikey']
             giphy_rating = config['giphy_rating']
@@ -77,7 +83,7 @@ def send_discord(r_msg, url = None):
     r = requests.post(webhook_url, data=json.dumps(data), headers=headers)
     #Appends raw POST date to log file.
     logging.info("Post data: {}".format(r))
-    
+
 #New Login Function Still Testing
 #Login to get data from Duolingo
 def login():
@@ -187,6 +193,8 @@ def main():
         logging.critical("Failed to load configuration. Aborting.")
         logging.critical("Full error is: {}".format(e))
 
+    #Login into accoount 
+    login()
     #Updates streak data from Duolingo
     update_data()
     #Verifies that streak_data.json is present and runs check_data to run main routine to verify if users streaks have changed
