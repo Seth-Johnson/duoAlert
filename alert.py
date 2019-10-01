@@ -102,11 +102,12 @@ def login():
 
 #Updates streak data of users in config file.
 def update_data():
+    logging.info("Updated Data")
     global streak_data
     for user in users:
         try:
-            with urllib.request.urlopen(api_endpoint + user) as data_r:
-                data_p = json.loads(data_r.read().decode())
+            with session as data_r:
+                data_p = json.loads(json.dumps(data_r.get(api_endpoint + user, cookies=session.cookies).json()))
         except Exception as e:
             logging.exception("Failed to fetch or parse data for user {}. Skipping.".format(user))
             logging.exception("Exception was: {}".format(e))
