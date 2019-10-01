@@ -111,17 +111,17 @@ def login():
 def update_data():
 	global streak_data
 
-    for user in users:
-        try:
-            with session as data_r:
-                data_p = json.loads(json.dumps(data_r.get(api_endpoint + user, cookies=session.cookies).json()))
-        except Exception as e:
-            logging.exception("Failed to fetch or parse data for user {}. Skipping.".format(user))
-            logging.exception("Exception was: {}".format(e))
-            continue
+	for user in users:
+		try:
+			with session as data_r:
+				data_p = json.loads(json.dumps(data_r.get(api_endpoint + user, cookies=session.cookies).json()))
+		except Exception as e:
+			logging.exception("Failed to fetch or parse data for user {}. Skipping.".format(user))
+			logging.exception("Exception was: {}".format(e))
+		continue
 
-        streak = get_streak(data_p)
-        streak_data[user] = streak
+	streak = get_streak(data_p)
+	streak_data[user] = streak
 
 	logging.info("Updated Data")
 
