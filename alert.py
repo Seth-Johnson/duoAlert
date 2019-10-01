@@ -14,9 +14,11 @@ import random
 webhook_url = None
 users = []
 streak_data = {}
-version = "0.5"
+version = "1.0"
 giphy_apikey = ""
 phrase_r = {}
+login_url = "https://www.duolingo.com/login"
+sadness_gif = "https://media.giphy.com/media/Ty9Sg8oHghPWg/giphy.gif"
 
 #Gets time and creates timestamp
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')

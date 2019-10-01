@@ -1,4 +1,6 @@
 {
+  "username":"<username_of_duolingo>",
+  "password":"<password_of_duolingo>",
   "webhook_url": "<discord_webhook_url>",
   "users": ["exampleUser"],
   "use_giphy": true,
