@@ -45,6 +45,7 @@ def get_config():
         config = json.load(config_r)
         webhook_url = config['webhook_url']
         users = config['users']
+        logging.info(users)
         username = config['username']
         password = config['password']
 
@@ -109,21 +110,23 @@ def login():
 
 #Updates streak data of users in config file.
 def update_data():
-	global streak_data
+    global streak_data
 
-	for user in users:
-		try:
-			with session as data_r:
-				data_p = json.loads(json.dumps(data_r.get(api_endpoint + user, cookies=session.cookies).json()))
-		except Exception as e:
-			logging.exception("Failed to fetch or parse data for user {}. Skipping.".format(user))
-			logging.exception("Exception was: {}".format(e))
-		continue
+    for user in users:
+        logging.info("Loaded User:{}".format(user))
+        try:
+            with session as data_r:
+                data_p = json.loads(json.dumps(data_r.get(api_endpoint + user, cookies=session.cookies).json()))
+                logging.info("API url used {}".format(api_endpoint + user))
+                streak = get_streak(data_p)
+                streak_data[user] = streak
+                logging.info("Streak for user {} is {}".format(user, streak))
+        except Exception as e:
+            logging.exception("Failed to fetch or parse data for user {}. Skipping.".format(user))
+            logging.exception("Exception was: {}".format(e))
+        continue
 
-	streak = get_streak(data_p)
-	streak_data[user] = streak
-
-	logging.info("Updated Data")
+    logging.info("Updated Data")
 
 #Updates streak_data.json with pulled data from update_data function
 def update_data_file():
