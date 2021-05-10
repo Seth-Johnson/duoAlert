@@ -1,4 +1,4 @@
-![duoAlertOxide icon](https://cdn.discordapp.com/attachments/722708774967574618/841396460381798400/68747470733a2f2f692e696d6775722e636f6d2f68534c30784b502e706e67-NEW.png)
+![duoAlertOxide icon](https://cdn.discordapp.com/attachments/722708774967574618/841409538594570250/g1527.svg.png)
 
 # duoAlertOxide
 ## what is it?
