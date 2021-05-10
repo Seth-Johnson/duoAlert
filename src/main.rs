@@ -1,18 +1,23 @@
 use rand::Rng;
 use std::path::Path;
+use error_chain::error_chain;
+use std::io::Read;
+
+// global structure definitions
+    //    Holds Login Details
+    struct LoginData { 
+        username: String,
+        password: String
+    }
 
 fn get_config(cfgpath: &str) {
     let cfgpath = cfgpath;
 }
 
-fn login() {
+fn login(logindata: LoginData) {
 
     // grab login deets as struct
     // maybe fix and turn this into json later
-    struct LoginData {
-        login: String,
-        password: String
-    }
 
     let jwt: &str = "";
 }
@@ -29,16 +34,18 @@ fn update_data_file() {
 
 }
 
+
 fn main() {
 
     let config_path: &str = "";
     /*
     The config loader thing
     */
+    let my_login: LoginData = LoginData {username: String::from("myUserName"), password: String::from("myPassword")};
 
     get_config(config_path);
 
-    login();
+    login(my_login);
 
     update_data();
 
@@ -47,10 +54,15 @@ fn main() {
     */
 
     if !Path::new("streak_data.json").exists() {
-        // check the data in the file
+        
+        // cry about nonexistent path
         println!("failed to retrieve streak data");
+
     } else {
+        
+        // check the data in the file
         check_data();
+        
     }
 
     update_data_file();
