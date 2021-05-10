@@ -10,7 +10,7 @@ use std::io::Read;
         password: String
     }
 
-fn get_config(cfgpath: &str) {
+fn get_config(cfgpath: String) {
     let cfgpath = cfgpath;
 }
 
@@ -62,7 +62,7 @@ fn main() {
         
         // check the data in the file
         check_data();
-        
+
     }
 
     update_data_file();
