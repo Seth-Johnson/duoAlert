@@ -3,17 +3,17 @@
 # duoAlertOxide
 
 ## what is it?
-duoALertOxide is a programatic, function-first Rust re-implimentation of [duoAlert](https://github.com/Seth-Johnson/duoAlert) by [Seth Johnson.](https://gihtub.com/Seth-Johnson)
+duoAlertOxide is a programatic, function-oriented re-implimentation of [duoAlert](https://github.com/Seth-Johnson/duoAlert) by [Seth Johnson](https://gihtub.com/Seth-Johnson) in [rust](https://github.com/rust-lang/rust).
 
 ## what does it do?
-Uses discord webhooks to send a message when a followed user extends or starts a streak based on their daily goal.
+duoAlertOxide uses discord webhooks to send a message when a followed user extends or starts a streak based on their daily goal.
  
 
 ## how do i configure this?
 
 DuoAlert reads a basic JSON configuration file to determine which users to follow and what the webhook URL is.  If `use_giphy` is `true` then the phrases pulled from phrases will be used to search giphy and pull the top gif. If `false` your predetermined gif's will be used.
 
-in the directory the command is ran from:
+place your `config.json` file in the directory the command is ran from:
 ```
 config.json
 --------------------------------
@@ -31,6 +31,6 @@ config.json
 	}
 ```
 
-## Are we affilliated at all? 
+## Are we affiliated at all? 
 
 We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with Duolingo, or any of its subsidiaries or its affiliates. The official Duolingo website can be found at http://duolingo.com. The name “Duolingo” as well as related names, marks, emblems and images are registered trademarks of Duolingo.
