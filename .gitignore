@@ -6,6 +6,7 @@ config.json.live
 __pycache__/
 Cargo.lock
 .vscode
+#.vs
 
 # Added by cargo
 
