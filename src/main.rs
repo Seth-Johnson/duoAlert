@@ -37,13 +37,13 @@ fn update_data_file() {
 
 fn main() {
 
-    let config_path: &str = "";
+    let config_path: String = String::from("config.json");
     /*
     The config loader thing
     */
     let my_login: LoginData = LoginData {username: String::from("myUserName"), password: String::from("myPassword")};
 
-    get_config(config_path);
+    get_config(String::from(config_path));
 
     login(my_login);
 
