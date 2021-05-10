@@ -8,6 +8,8 @@ Cargo.lock
 .vscode
 #.vs
 
+alert.py.scaffold
+
 # Added by cargo
 
 /target

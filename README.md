@@ -1,7 +1,6 @@
-![duoAlertOxide icon](https://cdn.discordapp.com/attachments/683096422362775574/841364917525544990/68747470733a2f2f692e696d6775722e636f6d2f68534c30784b502e706e67-NEW.png)
+![duoAlertOxide icon](https://cdn.discordapp.com/attachments/683096422362775574/841391065378193418/68747470733a2f2f692e696d6775722e636f6d2f68534c30784b502e706e67-NEW.png)
 
 # duoAlertOxide
-
 ## what is it?
 duoAlertOxide is a programatic, function-oriented re-implimentation of [duoAlert](https://github.com/Seth-Johnson/duoAlert) by [Seth Johnson](https://gihtub.com/Seth-Johnson) in [rust](https://github.com/rust-lang/rust).
 
