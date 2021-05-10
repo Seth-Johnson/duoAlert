@@ -8,8 +8,8 @@ Cargo.lock
 .vscode
 #.vs
 
+# blake-isms
 alert.py.scaffold
 
 # Added by cargo
-
 /target
