@@ -1,9 +1,10 @@
-![duoAlert](https://i.imgur.com/hSL0xKP.png)
+![duoAlertOxide icon](https://cdn.discordapp.com/attachments/683096422362775574/841364917525544990/68747470733a2f2f692e696d6775722e636f6d2f68534c30784b502e706e67-NEW.png)
 
-# duoAlert
+# duoAlertOxide
 
-Uses discord webhooks to send a message when a followed user extends or starts a streak based on their daily goal.  
-
+Uses discord webhooks to send a message when a followed user extends or starts a streak based on their daily goal.
+ 
+Rust re-implimentation of [Seth Johnson's duoAlert](https://github.com/seth-johnson/duoAlert)
 
 ## config
 

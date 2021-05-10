@@ -209,5 +209,6 @@ def main():
         check_data()
     #Updates streak_data.json with new data retrieved from Duolingo api
     update_data_file()
+
 #Runs main function
 main()
