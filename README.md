@@ -10,6 +10,13 @@ Rust re-implimentation of [Seth Johnson's duoAlert](https://github.com/seth-john
 
 DuoAlert reads a basic JSON configuration file to determine which users to follow and what the webhook URL is.  If `use_giphy` is `true` then the phrases pulled from phrases will be used to search giphy and pull the top gif. If `false` your predetermined gif's will be used.
 
+in the directory the command is ran from:
+```
+config.json
+--------------------------------
+```
+
+```json
 	{
 	  "username":"<username_of_duolingo>",
   	  "password":"<password_of_duolingo>",
@@ -19,6 +26,7 @@ DuoAlert reads a basic JSON configuration file to determine which users to follo
           "giphy_apikey": "YOUR_API_KEY_HERE",
           "giphy_rating": "G"
 	}
+```
 
 ## Notice of Non-Affiliation and Disclaimer 
 
