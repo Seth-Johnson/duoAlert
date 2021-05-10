@@ -4,9 +4,9 @@ config.json
 alert.pyc
 config.json.live
 __pycache__/
-
+Cargo.lock
+.vscode
 
 # Added by cargo
 
 /target
-Cargo.lock
