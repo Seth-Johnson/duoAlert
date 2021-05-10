@@ -1,3 +1,7 @@
+extern crate serde_json;
+extern crate serde;
+extern crate serde_derive;
+
 use rand::Rng;
 use std::path::Path;
 use error_chain::error_chain;
