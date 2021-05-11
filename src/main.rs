@@ -1,24 +1,34 @@
 extern crate serde_json;
 extern crate serde;
 extern crate serde_derive;
+extern crate reqwest;
 
 use rand::Rng;
 use std::path::Path;
 use error_chain::error_chain;
 use std::io::Read;
+use serde::{Deserialize, Serialize};
+use serde_json::Result;
+//use reqwest::Client;
 
 // global structure definitions
-    //    Holds Login Details
-    struct LoginData { 
-        username: String,
-        password: String
+
+    // Holds the config data
+    struct Config {
+        duo_username: String,
+        duo_password: String
+    }
+
+    // Holds Login Details
+    struct CfgData {
+        
     }
 
 fn get_config(cfgpath: String) {
     let cfgpath = cfgpath;
 }
 
-fn login(logindata: LoginData) {
+fn login(logindata: Config) {
 
     // grab login deets as struct
     // maybe fix and turn this into json later
@@ -45,7 +55,10 @@ fn main() {
     /*
     The config loader thing
     */
-    let my_login: LoginData = LoginData {username: String::from("myUserName"), password: String::from("myPassword")};
+    let my_login = Config {
+        duo_username: String::from("myUserName"),
+        duo_password: String::from("myPassword")
+    };
 
     get_config(String::from(config_path));
 

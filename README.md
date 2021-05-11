@@ -30,6 +30,6 @@ config.json
 	}
 ```
 
-## Are we affiliated at all? 
+## are we affiliated at all? 
 
 We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with Duolingo, or any of its subsidiaries or its affiliates. The official Duolingo website can be found at http://duolingo.com. The name “Duolingo” as well as related names, marks, emblems and images are registered trademarks of Duolingo.
