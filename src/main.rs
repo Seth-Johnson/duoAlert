@@ -5,7 +5,7 @@ extern crate reqwest;
 
 use rand::Rng;
 use std::path::Path;
-use error_chain::error_chain;
+//use error_chain::error_chain;
 use std::io::Read;
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
@@ -19,13 +19,8 @@ use serde_json::Result;
         duo_password: String
     }
 
-    // Holds Login Details
-    struct CfgData {
-        
-    }
-
-fn get_config(cfgpath: String) {
-    let cfgpath = cfgpath;
+fn get_config(cfg_path: String) {
+    //
 }
 
 fn login(logindata: Config) {
