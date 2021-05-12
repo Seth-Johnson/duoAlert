@@ -4,13 +4,15 @@ extern crate serde_derive;
 extern crate reqwest;
 
 //use rand::Rng;
-use std::path::Path;
-use std::fs::File;
+use std::{error,fs::{File, read_to_string,}, path::Path, env };
+//use std::
+//use std::fs::{File, };
 //use std::io::Read;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, Map, Result};
 
 // Holds the config data
+// #[derive(Serialize, Deserialize, Debug)]
 struct Config {
     users: String,
     webhook_url: String,
@@ -30,6 +32,11 @@ fn get_config(cfg_path: &str) {
     } else {
         
         // check the config data in the file
+        let config_r = read_to_string(cfg_path)
+        .expect("Something went wrong whilst reading the config file");
+
+        // Print cfg
+        println!("{}",String::from(config_r))
         
     }
 }
@@ -57,11 +64,11 @@ fn send_discord(r_msg: String, url :String, version: String, timestamp: String )
 }
 
 fn login(logindata: Config) {
-
-    // grab login deets as struct
+    let logindata = logindata;//plceholder
+    
     // maybe fix and turn this into json later
 
-    let jwt: &str = "";
+    //let jwt: &str = "";
 }
 
 fn update_data() {
@@ -69,7 +76,8 @@ fn update_data() {
 }
 
 fn check_data() {
-    let previous_r = File::open("streak_data.json");
+    let config_r = read_to_string("streak_data.json")
+        .expect("Something went wrong whilst reading the config file");
     //let previous = /*json load */(previous_r);
 
 }
@@ -87,18 +95,18 @@ fn main() {
     /*
     The config loader thing
     */
-    let my_config = Config {
+    /* let my_config = Config {
         users: String::from(""),
         webhook_url: String::from(""),
         giphy_apikey: String::from(""),
         giphy_rating: String::from(""),
         username: String::from(""),
         password: String::from("")
-    };
+    }; */
 
     get_config(config_path);
 
-    login(my_config);
+    //login(my_config);
 
     update_data();
 
