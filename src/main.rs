@@ -95,6 +95,8 @@ fn main() {
     /*
     The config loader thing
     */
+
+    //this cfg block probably goes somewhere else after/within get_config()
     /* let my_config = Config {
         users: String::from(""),
         webhook_url: String::from(""),
