@@ -116,6 +116,7 @@ fn main() {
     get streak data
     */
 
+    // Todo: Impliment this check better
     if !Path::new("streak_data.json").exists() {
         
         // cry about nonexistent path
@@ -131,3 +132,5 @@ fn main() {
     update_data_file();
     
 }
+
+// Todo: impliment tests
