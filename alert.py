@@ -159,7 +159,7 @@ def check_data():
             try:
                 with urllib.request.urlopen(giphy_endpoint.format(giphy_apikey, urllib.parse.quote(phtext), giphy_rating)) as imgapi:
                     img_p = json.loads(imgapi.read().decode())
-                    phurl = img_p["data"]["image_url"]
+                    phurl = img_p["data"]["images"]["downsized_medium"]["url"]
             except Exception as e:
                 logging.exception("Failed to fetch or parse giphy data for keyword '{}'.".format(phtext))
                 logging.exception("Exception was: {}".format(e))
