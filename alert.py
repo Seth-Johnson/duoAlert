@@ -181,7 +181,7 @@ def check_data():
                 send_discord("This message should not have been sent... *stratches head*. If recieved, call the president! Set DEFCON 1!")
                 logging.critical("WTH just happened")
         #If user has not increased streak, posts the results to Discord
-        elif streak_data[user] is 0 and previous[user] > 0:
+        elif streak_data[user] == 0 and previous[user] > 0:
             send_discord("@everyone {} has lost their streak! Tease them mercilessly.".format(user), sadness_gif)
             logging.info("{} failed their streak. Loser.".format(user))
 #Returns steak data
