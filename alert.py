@@ -1,7 +1,4 @@
-#!/usr/bin/env python3
-
-import urllib.request
-import urllib.parse
+#!/usr/bin/env python3json
 import requests
 import os
 import json
@@ -31,7 +28,7 @@ def get_phrase():
         phrase = json.load(phrase_r)
         phrases = phrase['phrases']
         r = random.SystemRandom()
-        return r.choice(phrases)
+        get_phrase.v = r.choice(phrases)
 
 #Function parses config data
 def get_config():
@@ -41,6 +38,7 @@ def get_config():
     global giphy_rating
     global username
     global password
+    global use_giphy
     with open('config.json') as config_r:
         config = json.load(config_r)
         webhook_url = config['webhook_url']
@@ -48,6 +46,7 @@ def get_config():
         logging.info(users)
         username = config['username']
         password = config['password']
+        use_giphy = config["use_giphy"]
 
         if config['use_giphy'] is True:
             giphy_apikey = config['giphy_apikey']
@@ -92,20 +91,13 @@ def login():
     global session
     login_data = {"login": username, "password": password}
     session = requests.Session()
-    jwt = None
-    headers = {}
 
-    if jwt is not None:
-        headers['Authorization'] = 'Bearer ' + jwt
-        logging.info("Header Set")
-
-    req = requests.Request('POST', login_url,json=login_data,headers=headers,cookies=session.cookies)
+    req = requests.Request('POST', login_url,json=login_data,cookies=session.cookies)
     prepped = req.prepare()
     request = session.send(prepped)
     attempt = request.json()
 
     if attempt.get('response') == 'OK':
-        logging.info(request.headers['jwt'])
         logging.info("Logged In")
 
 #Updates streak data of users in config file.
@@ -142,26 +134,23 @@ def update_data_file():
 
 #Requests data from Duolingo
 def check_data():
+    #Get Phrases
+    get_phrase()
     #Checks new data vs saved
     previous_r = open('streak_data.json')
     previous = json.load(previous_r)
     previous_r.close()
     logging.info("Loaded streak data.")
     for user in previous.keys():
-        #Gets phrase from get_phrase function
-        ph = get_phrase()
-        phtext = ph["text"]
-        phurl = ph["url"]
         #Appends changes if any to log file
         logging.info("Loop 1 for {}: New: {} Old:{}".format(user, streak_data[user], previous[user]))
-        #Checks if GIPHY api was set in config, if it doesnt falls back to links in phrases.json
-        if not giphy_apikey == "":
+        #Checks if GIPHY was set enabled config, if it doesnt falls back to links in phrases.json
+        if use_giphy and not giphy_apikey == "":
             try:
-                with urllib.request.urlopen(giphy_endpoint.format(giphy_apikey, urllib.parse.quote(phtext), giphy_rating)) as imgapi:
-                    img_p = json.loads(imgapi.read().decode())
-                    phurl = img_p["data"]["images"]["downsized_medium"]["url"]
+                with requests.get(giphy_endpoint.format(giphy_apikey, get_phrase.v["text"], giphy_rating)) as imgapi:
+                    get_phrase.v["url"] = imgapi.json()["data"]["images"]["downsized_medium"]["url"]
             except Exception as e:
-                logging.exception("Failed to fetch or parse giphy data for keyword '{}'.".format(phtext))
+                logging.exception("Failed to fetch or parse giphy data for keyword '{}'.".format(get_phrase.v["text"]))
                 logging.exception("Exception was: {}".format(e))
         #Checks if user doesnt have streak; if so skips posting to discord
         if streak_data[user] == previous[user]:
@@ -170,7 +159,7 @@ def check_data():
         elif streak_data[user] > previous[user]:
             #Checks if user has continued their streak, and posts the results to Discord
             if streak_data[user] > 1:
-                send_discord("@everyone {} has continued their streak of {} days! {}!".format(user, streak_data[user], phtext), phurl)
+                send_discord("@everyone {} has continued their streak of {} days! {}!".format(user, streak_data[user], get_phrase.v["text"]), get_phrase.v["url"])
                 logging.info("{} has extended their streak.".format(user))
             #Check if user lost streak, and posts the results to Discord
             elif streak_data[user] == 1:
