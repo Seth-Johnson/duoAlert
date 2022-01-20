@@ -8,12 +8,8 @@ import datetime
 import random
 
 #Basic Script Config Variables
-webhook_url = None
-users = []
 streak_data = {}
 version = "2.0"
-giphy_apikey = ""
-phrase_r = {}
 login_url = "https://www.duolingo.com/login"
 sadness_gif = "https://media.giphy.com/media/Ty9Sg8oHghPWg/giphy.gif"
 sadness_phrase = "Sadness"
@@ -32,28 +28,12 @@ def get_phrase():
         get_phrase.v = r.choice(phrases)
 
 #Function parses config data
-def get_config():
-    global users
-    global webhook_url
-    global giphy_apikey
-    global giphy_rating
-    global username
-    global password
-    global use_giphy
+def get_config(value):
     with open('config.json') as config_r:
         config = json.load(config_r)
-        webhook_url = config['webhook_url']
-        users = config['users']
-        logging.info(users)
-        username = config['username']
-        password = config['password']
-        use_giphy = config["use_giphy"]
-
-        if config['use_giphy'] is True:
-            giphy_apikey = config['giphy_apikey']
-            giphy_rating = config['giphy_rating']
-
-        logging.info("Config set.")
+        if not value == "password":
+            logging.info("Config value {} loaded with output of {}".format(value, config[value]))
+        return config[value]
 
 #Main API endpoints
 api_endpoint = 'http://www.duolingo.com/users/'
@@ -70,27 +50,27 @@ def send_discord(r_msg, url = None):
           "color":0xff8000,
           "type":"rich",
           "thumbnail": {
-            "url":"https://i.imgur.com/OTFSldg.png"
+            "url":"https://i.imgur.com/ZoPDQV9.png"
           },
           "image": {
             "url":"{}".format(url)
           },
           "footer":{
             "text":"DuoAlert v{} | {} | Powered by GIPHY".format(version, timestamp),
-            "icon_url":"https://i.imgur.com/OTFSldg.png"
+            "icon_url":"https://i.imgur.com/vJGlCau.png"
           }
         }]
     }
     #Creates JSON  Data to POST to webhook.
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = requests.post(webhook_url, data=json.dumps(data), headers=headers)
+    r = requests.post(get_config("webhook_url"), data=json.dumps(data), headers=headers)
     #Appends raw POST date to log file.
     logging.info("Post data: {}".format(r))
 
 #Login to get data from Duolingo
 def login():
     global session
-    login_data = {"login": username, "password": password}
+    login_data = {"login": get_config("username"), "password": get_config("password")}
     session = requests.Session()
 
     req = requests.Request('POST', login_url,json=login_data,cookies=session.cookies)
@@ -104,21 +84,20 @@ def login():
 #Updates streak data of users in config file.
 def update_data():
     global streak_data
-    for user in users:
+    for user in get_config("users"):
         logging.info("Loaded User:{}".format(user))
         try:
             with session as data_r:
-                data_p = json.loads(json.dumps(data_r.get(api_endpoint + user, cookies=session.cookies).json()))
+                data_p = data_r.get(api_endpoint + user, cookies=session.cookies).json()
                 logging.info("API url used {}".format(api_endpoint + user))
-                streak = get_streak(data_p)
-                streak_data[user] = streak
-                logging.info("Streak for user {} is {}".format(user, streak))
+                streak_data[user] = data_p["site_streak"]
+                logging.info("Streak for user {} is {}".format(user, data_p["site_streak"]))
         except Exception as e:
             logging.exception("Failed to fetch or parse data for user {}. Skipping.".format(user))
             logging.exception("Exception was: {}".format(e))
         continue
     logging.info("Updated Data")
-
+ 
 #Updates streak_data.json with pulled data from update_data function
 def update_data_file():
     try:
@@ -134,42 +113,37 @@ def update_data_file():
 #Requests data from Duolingo
 def check_data():
     global sadness_gif
-    #Get Phrases
     #Checks new data vs saved
     previous = json.load(open('streak_data.json'))
     logging.info("Loaded streak data.")
-    for user in previous.keys():
+    for current_user in get_config("users"):
         get_phrase()
-        #Appends changes if any to log file
-        logging.info("Loop 1 for {}: New: {} Old:{}".format(user, streak_data[user], previous[user]))
-        #Checks if GIPHY was set enabled config, if it doesnt falls back to links in phrases.json
-        if use_giphy and not giphy_apikey == "":
-            try:
-                with requests.get(giphy_endpoint.format(giphy_apikey, get_phrase.v["text"], giphy_rating)) as imgapi:
-                    get_phrase.v["url"] = imgapi.json()["data"]["images"]["fixed_width_downsampled"]["url"]
-                with requests.get(giphy_endpoint.format(giphy_apikey, sadness_phrase, giphy_rating)) as imgapi:
-                    sadness_gif = imgapi.json()["data"]["images"]["fixed_width_downsampled"]["url"]
-            except Exception as e:
-                logging.exception("Failed to fetch or parse giphy data for keyword '{}'.".format(get_phrase.v["text"]))
-                logging.exception("Exception was: {}".format(e))
-        #Verifies that all users have increased there streak
-        if streak_data[user] > previous[user]:
-            #Checks if user has continued their streak, and posts the results to Discord
-            if streak_data[user] > 1:
-                send_discord("@everyone {} has continued their streak of {} days! {}!".format(user, streak_data[user], get_phrase.v["text"]), get_phrase.v["url"])
-                logging.info("{} has extended their streak.".format(user))
-            #Check if user lost streak, and posts the results to Discord
-            elif streak_data[user] == 1:
-                send_discord("@everyone {} has restarted their streak! Clap with pity.".format(user))
-                logging.info("{} restarted their streak".format(user))
-        #If user has not increased streak, posts the results to Discord
-        elif streak_data[user] == 0 and previous[user] > 0:
-            send_discord("@everyone {} has lost their streak! Tease them mercilessly.".format(user), sadness_gif)
-            logging.info("{} failed their streak. Loser.".format(user))
-#Returns steak data
-def get_streak(data_p):
-    streak = data_p["site_streak"]
-    return streak
+        if current_user in previous:
+            #Checks if GIPHY was set enabled config, if it doesnt falls back to links in phrases.json
+            if get_config("use_giphy") and get_config("giphy_apikey"):
+                try:
+                    with requests.get(giphy_endpoint.format(get_config("giphy_apikey"), get_phrase.v["text"], get_config("giphy_rating"))) as imgapi:
+                        get_phrase.v["url"] = imgapi.json()["data"]["images"]["fixed_width_downsampled"]["url"]
+                    with requests.get(giphy_endpoint.format( get_config("giphy_apikey"), sadness_phrase, get_config("giphy_rating"))) as imgapi:
+                        sadness_gif = imgapi.json()["data"]["images"]["fixed_width_downsampled"]["url"]
+                except Exception as e:
+                    logging.exception("Failed to fetch or parse giphy data for keyword '{}'.".format(get_phrase.v["text"]))
+                    logging.exception("Exception was: {}".format(e))
+
+            #Verifies that all users have increased there streak
+            if streak_data[current_user] > previous[current_user]:
+                #Checks if user has continued their streak, and posts the results to Discord
+                if streak_data[current_user] > 1:
+                    send_discord("@everyone {} has continued their streak of {} days! {}!".format(current_user, streak_data[current_user], get_phrase.v["text"]), get_phrase.v["url"])
+                    logging.info("{} has extended their streak.".format(current_user))
+                #Check if user lost streak, and posts the results to Discord
+                elif streak_data[current_user] == 1:
+                    send_discord("@everyone {} has restarted their streak! Clap with pity.".format(current_user))
+                    logging.info("{} restarted their streak".format(current_user))
+            #If user has not increased streak, posts the results to Discord
+            elif streak_data[current_user] == 0 and previous[current_user] > 0:
+                send_discord("@everyone {} has lost their streak! Tease them mercilessly.".format(current_user), sadness_gif)
+                logging.info("{} failed their streak. Loser.".format(current_user))
 
 #Main function
 def main():
@@ -177,7 +151,7 @@ def main():
     logging.info(complete_timestamp)
     #Checks if config is present, else throws error
     try:
-        get_config()
+        os.path.exists('config.json')
     except Exception as e:
         logging.critical("Failed to load configuration. Aborting.")
         logging.critical("Full error is: {}".format(e))
