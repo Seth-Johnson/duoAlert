@@ -1,6 +1,6 @@
 ![duoAlert](https://i.imgur.com/hSL0xKP.png)
 
-# duoAlert
+# duoAlert ALPHA Branch
 
 Uses discord webhooks to send a message when a followed user extends or starts a streak based on their daily goal.  
 
@@ -11,12 +11,14 @@ DuoAlert reads a basic JSON configuration file to determine which users to follo
 
 	{
 	  "username":"<username_of_duolingo>",
-  	  "password":"<password_of_duolingo>",
-	  "webhook_url": "<webhook_url>",
+	  "password":"<password_of_duolingo>",
+	  "webhook_url": "<discord_webhook_url>",
 	  "users": ["exampleUser"],
 	  "use_giphy": true,
-          "giphy_apikey": "YOUR_API_KEY_HERE",
-          "giphy_rating": "G"
+	  "giphy_rating": "G",
+	  "giphy_apikey": "YOUR_API_KEY_HERE",
+	  "sadness_gif": "https://media.giphy.com/media/Ty9Sg8oHghPWg/giphy.gif",
+	  "sadness_phrase": "Sadness"
 	}
 
 ## Notice of Non-Affiliation and Disclaimer 
