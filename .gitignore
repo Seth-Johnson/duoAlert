@@ -6,3 +6,6 @@ config.json.live
 config-test.json
 run_duoalert.sh
 __pycache__/
+test.py
+test.png
+out.gif
