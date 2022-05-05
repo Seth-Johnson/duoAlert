@@ -6,7 +6,7 @@ Uses discord webhooks to send a message when a followed user extends or starts a
 
 ## Docker Config
 
-	docker run -d sirbomble/duoalert -v /path/of/config:/app/config duoalert-docker
+	docker run -d --name duoalert-docker -v /path/to/config:/app/config --restart unless-stopped sirbomble/duoalert
 
 ## config
 
