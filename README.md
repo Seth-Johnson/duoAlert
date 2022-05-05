@@ -4,6 +4,9 @@
 
 Uses discord webhooks to send a message when a followed user extends or starts a streak based on their daily goal.  
 
+##Docker Config
+
+	docker run -d sirbomble/duoalert -v /path/of/config:/app/config duoalert-docker
 
 ## config
 
