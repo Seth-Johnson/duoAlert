@@ -15,7 +15,7 @@ giphy_endpoint = 'https://api.giphy.com/v1/gifs/random?api_key={}&tag={}&rating=
 #Gets time and creates timestamp
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')
 complete_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-logging.basicConfig(filename="duoAlert.log", level=logging.INFO)
+logging.basicConfig(filename="config/duoAlert.log", level=logging.CRITICAL)
 
 #Function parses phrases data
 def get_phrase():
@@ -27,7 +27,7 @@ def get_phrase():
 
 #Function parses config data
 def get_config(value):
-    with open('config.json') as config_r:
+    with open('config/config.json') as config_r:
         config = json.load(config_r)
         if not value == "password":
             logging.info("Config value {} loaded with output of {}".format(value, config[value]))
@@ -182,11 +182,6 @@ def main():
     # check if existing saved data
     logging.info(complete_timestamp)
     #Checks if config is present, else throws error
-    try:
-        os.path.exists('config.json')
-    except Exception as e:
-        logging.critical("Failed to load configuration. Aborting.")
-        logging.critical("Full error is: {}".format(e))
 
     #Login into accoount 
     login()
@@ -198,4 +193,11 @@ def main():
     #Updates streak_data.json with new data retrieved from Duolingo api
     update_data_file()
 #Runs main function
-main()
+    try:
+        os.path.exists('config.json')
+        main()
+        time.sleep(300)
+    except Exception as e:
+        logging.critical("Failed to load configuration. Aborting.")
+        logging.critical("Full error is: {}".format(e))
+    
