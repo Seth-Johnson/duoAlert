@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+!/config/config-example.json
+!/config/phrases.json
+!/requirements.txt
+!/alert.py

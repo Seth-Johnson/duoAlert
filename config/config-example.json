@@ -5,5 +5,7 @@
   "users": ["exampleUser"],
   "use_giphy": true,
   "giphy_rating": "G",
-  "giphy_apikey": "YOUR_API_KEY_HERE"
+  "giphy_apikey": "YOUR_API_KEY_HERE",
+  "sadness_gif": "https://media.giphy.com/media/Ty9Sg8oHghPWg/giphy.gif",
+  "sadness_phrase": "Sadness"
 }

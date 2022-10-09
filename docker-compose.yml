@@ -1,0 +1,8 @@
+services:
+  duoalert:
+    image: duoalert/duoalert
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./duoalert-config:/app/config

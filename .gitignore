@@ -1,8 +1,15 @@
 streak_data.json
 duoAlert.log
-config.json
 alert.pyc
 config.json.live
 config-test.json
 run_duoalert.sh
 __pycache__/
+test.py
+test.png
+out.gif
+tmp/*
+config/*
+!config/phrases.json
+!config/config-example.json
+duoalert-config/*
