@@ -15,11 +15,11 @@ giphy_endpoint = 'https://api.giphy.com/v1/gifs/random?api_key={}&tag={}&rating=
 #Gets time and creates timestamp
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')
 complete_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-logging.basicConfig(filename="duoAlert.log", level=logging.INFO)
+logging.basicConfig(filename="config/duoAlert.log", level=logging.INFO)
 
 #Function parses phrases data
 def get_phrase():
-    with open('phrases.json') as phrase_r:
+    with open('config/phrases.json') as phrase_r:
         phrase = json.load(phrase_r)
         phrases = phrase['phrases']
         r = random.SystemRandom()
@@ -27,7 +27,7 @@ def get_phrase():
 
 #Function parses config data
 def get_config(value):
-    with open('config.json') as config_r:
+    with open('config/config.json') as config_r:
         config = json.load(config_r)
         if not value == "password":
             logging.info("Config value {} loaded with output of {}".format(value, config[value]))
@@ -132,7 +132,7 @@ def update_data():
 #Updates streak_data.json with pulled data from update_data function
 def update_data_file():
     try:
-        streak_file = open("streak_data.json", 'w')
+        streak_file = open("config/streak_data.json", 'w')
         #Gets data from global variable streak_data and writes to file
         streak_file.write(json.dumps(streak_data))
         streak_file.close()
@@ -144,7 +144,7 @@ def update_data_file():
 #Requests data from Duolingo
 def check_data():
     #Checks new data vs saved
-    previous = json.load(open('streak_data.json'))
+    previous = json.load(open('config/streak_data.json'))
     logging.info("Loaded streak data.")
     for current_user in get_config("users"):
         get_phrase()
@@ -182,20 +182,22 @@ def main():
     # check if existing saved data
     logging.info(complete_timestamp)
     #Checks if config is present, else throws error
-    try:
-        os.path.exists('config.json')
-    except Exception as e:
-        logging.critical("Failed to load configuration. Aborting.")
-        logging.critical("Full error is: {}".format(e))
 
     #Login into accoount 
     login()
     #Updates streak data from Duolingo
     update_data()
     #Verifies that streak_data.json is present and runs check_data to run main routine to verify if users streaks have changed
-    if os.path.exists('streak_data.json'):
+    if os.path.exists('config/streak_data.json'):
         check_data()
     #Updates streak_data.json with new data retrieved from Duolingo api
     update_data_file()
 #Runs main function
-main()
+try:
+    if os.path.exists('config/config.json'):
+        main()
+    else:
+        logging.critical("Failed to load configuration. Aborting.")
+except Exception as e:
+    
+    logging.critical("Full error is: {}".format(e))
