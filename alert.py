@@ -1,4 +1,4 @@
-#!/usr/bin/env python3json
+#!/usr/bin/env python3
 import requests
 import os
 import json
@@ -88,7 +88,10 @@ def update_data():
         logging.info("Loaded User:{}".format(user))
         try:
             with session as data_r:
-                data_p = data_r.get(api_endpoint + user, cookies=session.cookies).json()
+                jwt = session.cookies.get_dict()['jwt_token']
+                headers = {"User-Agent": "Totally not python","Authorization": "Bearer {}".format(jwt)}
+                #data_p = data_r.get(api_endpoint + user,headers=headers).json()
+                data_p = requests.get(api_endpoint + user,headers=headers).json()
                 logging.info("API url used {}".format(api_endpoint + user))
                 streak_data[user] = data_p["site_streak"]
                 logging.info("Streak for user {} is {}".format(user, data_p["site_streak"]))
