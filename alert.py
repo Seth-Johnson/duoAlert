@@ -90,7 +90,6 @@ def update_data():
             with session as data_r:
                 jwt = session.cookies.get_dict()['jwt_token']
                 headers = {"User-Agent": "Totally not python","Authorization": "Bearer {}".format(jwt)}
-                #data_p = data_r.get(api_endpoint + user,headers=headers).json()
                 data_p = requests.get(api_endpoint + user,headers=headers).json()
                 logging.info("API url used {}".format(api_endpoint + user))
                 streak_data[user] = data_p["site_streak"]
